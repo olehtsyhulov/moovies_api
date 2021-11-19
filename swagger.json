@@ -1,0 +1,984 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Movie RoR API",
+    "description": "Project for Movie",
+    "license": {
+      "name": "",
+      "url": ""
+    }
+  },
+  "host": "localhost:3007",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Movie",
+      "description": "API for get Movies"
+    }
+  ],
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/user/sing_up": {
+      "post": {
+        "tags": ["Sing Up"],
+        "summary": "Sing Up for user",
+        "responses": {
+          "200": {
+            "description": "Registration successful",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Registration successful"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User is exist",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "User with login ${login} already exist"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation errors",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "type": "string",
+                  "example": "First Name is invalid"
+                },
+                "last_name": {
+                  "type": "string",
+                  "example": "Last Name is invalid"
+                },
+                "login": {
+                  "type": "string",
+                  "example": "Login is invalid"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "Password is invalid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/sign_in": {
+      "post": {
+        "tags": ["Sign In"],
+        "parameters": [
+          { "in": "body",
+            "name": "Login",
+            "schema": {
+              "required": ["login", "password"],
+              "type": "object",
+              "properties": {
+                "login": {
+                  "type": "number",
+                  "example": 1
+                },
+                "password": {
+                  "type": "string",
+                  "example": 1
+                }
+              },
+              "example": {
+                "login": "login1",
+                "password": "a1234567A"
+              }
+            }
+          }],
+        "summary": "Sing in for user",
+        "responses": {
+          "200": {
+            "description": "Login success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Login successful"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User doesn't exist",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "User with login ${login} doesn't exist"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation errors",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "login": {
+                  "type": "string",
+                  "example": "Login is invalid"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "Password is invalid"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/genres": {
+      "get": {
+        "tags": ["Genres"],
+        "summary": "Get all genres",
+        "responses": {
+          "200": {
+            "description": "Get genres success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "genres": {
+                  "type": "array",
+                  "example": [
+                    {
+                    "id": 1,
+                    "name": "Horror"
+                    },
+                    {
+                      "id": 2,
+                      "name": "Action"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Genres"],
+        "summary": "Set multiple genres",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Add array of names for bulk set genres",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "names": {
+                  "type": "array",
+                  "example": ["Horror", "Action"]
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success bulk set genres",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "genres": {
+                  "type": "array",
+                  "example": [
+                    {
+                    "id": 1,
+                    "name": "Horror"
+                    },
+                    {
+                      "id": 2,
+                      "name": "Action"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Genres"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Add id and name for update genre",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Horror"
+                },
+                "id": {
+                  "type": "number",
+                  "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "summary": "Update genre",
+        "responses": {
+          "200": {
+            "description": "Update genre",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "genres": {
+                  "type": "array",
+                  "example": [
+                    {
+                    "id": 1,
+                    "name": "Horror"
+                    },
+                    {
+                      "id": 2,
+                      "name": "Action"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Genres"],
+        "summary": "Delete genre for admin",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Add id and for delete genre",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete genre",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "genres": {
+                  "type": "array",
+                  "example": [
+                    {
+                    "id": 1,
+                    "name": "Horror"
+                    },
+                    {
+                      "id": 2,
+                      "name": "Action"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Delete genre error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "genres": {
+                  "type": "object",
+                  "example": {
+                    "message": "Parameter name is not only word or hasn't id"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/languages": {
+      "get": {
+        "tags": ["languages"],
+        "summary": "Get all languages",
+        "responses": {
+          "200": {
+            "description": "Get languages success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "languages": {
+                  "type": "array",
+                  "example": [
+                    {
+                    "value": "cu",
+                    "name": "Slavic"
+                    },
+                    {
+                      "value": "de",
+                      "name": "German"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tmbd/init_data_base": {
+      "get": {
+        "tags": ["Init DB"],
+        "summary": "Call one time for init data base",
+        "responses": {
+          "200": {
+            "description": "Get init success"
+          }
+        }
+      }
+    },
+    "/movie": {
+      "get": {
+        "tags": ["Movies"],
+        "parameters": [
+          { "in": "query", "type": "boolean", "name": "adult", "description": "false"  },
+          { "in": "query", "type": "number", "name": "page", "description": "1"  },
+          { "in": "query", "type": "number", "name": "pre_page", "description": "20"  },
+          { "in": "query", "type": "number", "name": "budget_min", "description": "100000"  },
+          { "in": "query", "type": "number", "name": "budget_max", "description": "100000"  },
+          { "in": "query", "type": "string", "name": "language", "description": "en"  },
+          { "in": "query", "type": "string", "name": "title", "description": "Mortal Combat"  },
+          { "in": "query", "type": "number", "name": "popularity_min", "description": "0"  },
+          { "in": "query", "type": "number", "name": "popularity_max", "description": "1000"  },
+          { "in": "query", "type": "string", "name": "release_date_first", "description": "2015-12-27"  },
+          { "in": "query", "type": "string", "name": "release_date_last", "description": "2015-12-27"  },
+          { "in": "query", "type": "number", "name": "revenue_min", "description": "201500"  },
+          { "in": "query", "type": "number", "name": "revenue_max", "description": "201500"  },
+          { "in": "query", "type": "string", "name": "status", "description": "Allowed Values: Rumored, Planned, In Production, Post Production, Released, Canceled"  }
+        ],
+        "summary": "Get Movies by filters",
+        "responses": {
+          "200": {
+            "description": "Get Movies By Filter",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "movies": {
+                  "type": "array",
+                  "example": [{
+                      "id": 3,
+                      "adult": false,
+                      "backdrop_path": "/fQq1FWp1rC89xDrRMuyFJdFUdMd.jpg",
+                      "budget": 0,
+                      "homepage": "",
+                      "imdb_id": "tt13535456",
+                      "original_language": "en",
+                      "original_title": "Gabriel's Inferno Part III",
+                      "overview": "The final part of the film adaption of the erotic romance novel Gabriel's Inferno written by an anonymous Canadian author under the pen name Sylvain Reynard.",
+                      "popularity": 18.467,
+                      "poster_path": "/fYtHxTxlhzD4QWfEbrC1rypysSD.jpg",
+                      "release_date": "2020-11-18T22:00:00.000Z",
+                      "revenue": 0,
+                      "runtime": 105,
+                      "status": "Released",
+                      "tagline": "",
+                      "title": "Gabriel's Inferno Part III",
+                      "genre_ids": [
+                        14,
+                        4
+                      ],
+                      "movie_rate": 8.0
+                    }]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/movie/{id}": {
+      "get": {
+        "tags": ["Movies"],
+        "parameters": [
+          { "in": "query", "type": "number", "name": "id", "required": true }
+        ],
+        "summary": "Get Movies by filters",
+        "responses": {
+          "200": {
+            "description": "Get Movies By Filter",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "movie": {
+                  "type": "object",
+                  "example": {
+                      "id": 3,
+                      "adult": false,
+                      "backdrop_path": "/fQq1FWp1rC89xDrRMuyFJdFUdMd.jpg",
+                      "budget": 0,
+                      "homepage": "",
+                      "imdb_id": "tt13535456",
+                      "original_language": "en",
+                      "original_title": "Gabriel's Inferno Part III",
+                      "overview": "The final part of the film adaption of the erotic romance novel Gabriel's Inferno written by an anonymous Canadian author under the pen name Sylvain Reynard.",
+                      "popularity": 18.467,
+                      "poster_path": "/fYtHxTxlhzD4QWfEbrC1rypysSD.jpg",
+                      "release_date": "2020-11-18T22:00:00.000Z",
+                      "revenue": 0,
+                      "runtime": 105,
+                      "status": "Released",
+                      "tagline": "",
+                      "title": "Gabriel's Inferno Part III",
+                      "genre_ids": [
+                        14,
+                        4
+                      ],
+                      "movie_rate": 8.0
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rate": {
+      "get": {
+        "tags": ["Movie rate"],
+        "parameters": [
+          { "in": "query", "type": "number", "name": "user_id", "required": true },
+          { "in": "query", "type": "number", "name": "movie_id", "required": true }
+        ],
+        "summary": "Get Rate for movie",
+        "responses": {
+          "200": {
+            "description": "Get Rate for movie",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "movie_rate": {
+                  "type": "object",
+                  "example": {
+                      "rate_id": 3,
+                      "movie_id": 1,
+                      "user_id": 1,
+                      "rate": 10
+                    }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Movie rate"],
+        "parameters": [
+          { "in": "body",
+            "name": "Rate Object",
+            "schema": {
+              "required": ["user_id", "movie_id", "rate"],
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "movie_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "rate": {
+                  "type": "number",
+                  "example": 10
+                }
+              },
+              "example": {
+                "user_id": 1,
+                "movie_id": 1,
+                "rate": 10
+              }
+            }
+          }],
+        "summary": "Set Rate for movie",
+        "responses": {
+          "200": {
+            "description": "Set Rate for movie",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "movie_rate": {
+                  "type": "object",
+                  "example": {
+                      "rate_id": 3,
+                      "movie_id": 1,
+                      "user_id": 1,
+                      "rate": 10
+                    }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Movie rate"],
+        "description": "Update movie rate",
+        "parameters": [
+          { "in": "body",
+            "name": "Rate Object",
+            "schema": {
+              "required": ["user_id", "movie_id", "rate", "rate_id"],
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "movie_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "rate": {
+                  "type": "number",
+                  "example": 10
+                },
+                "rate_id": {
+                  "type": "number",
+                  "example": 1
+                }
+              },
+              "example": {
+                "user_id": 1,
+                "movie_id": 1,
+                "rate": 10,
+                "rate_id": 1
+              }
+            }
+          }],
+        "summary": "Update Rate for movie",
+        "responses": {
+          "200": {
+            "description": "Update Rate for movie",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "movie_rate": {
+                  "type": "object",
+                  "example": {
+                      "rate_id": 3,
+                      "movie_id": 1,
+                      "user_id": 1,
+                      "rate": 10
+                    }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Movie rate"],
+        "description": "Delete movie rate",
+        "parameters": [
+          { "in": "body",
+            "name": "Rate Object",
+            "schema": {
+              "required": ["rate_id"],
+              "type": "object",
+              "properties": {
+                "rate_id": {
+                  "type": "number",
+                  "example": 1
+                }
+              },
+              "example": {
+                "rate_id": 1
+              }
+            }
+          }],
+        "summary": "Delete Rate for movie",
+        "responses": {
+          "200": {
+            "description": "Delete Rate for movie"
+          }
+        }
+      }
+    },
+    "/review": {
+      "get": {
+        "tags": ["Review"],
+        "parameters": [
+          { "in": "query", "type": "number", "name": "movie_id", "required": true }
+        ],
+        "summary": "Get Review for current movie",
+        "responses": {
+          "200": {
+            "description": "Get Review for movie",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "review": {
+                  "type": "object",
+                  "example": [{
+                    "id": 5,
+                    "created_at": "2021-07-18T21:00:00.000Z",
+                    "udpated_at": null,
+                    "content": "content",
+                    "movie_id": 2,
+                    "user_id": 1,
+                    "first_name": "Alex",
+                    "last_name": "Admin"
+                  }]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Review"],
+        "parameters": [
+          { "in": "body",
+            "name": "Review",
+            "schema": {
+              "required": ["user_id", "movie_id", "content"],
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "movie_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "content": {
+                  "type": "string",
+                  "example": "content"
+                }
+              },
+              "example": {
+                "user_id": 1,
+                "movie_id": 1,
+                "content": "content"
+              }
+            }
+          }],
+        "summary": "Create Review",
+        "responses": {
+          "200": {
+            "description": "Create Review",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "review": {
+                  "type": "array",
+                  "example": [{
+                    "rate_id": 3,
+                    "movie_id": 1,
+                    "user_id": 1,
+                    "rate": 10
+                  }]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Review"],
+        "parameters": [
+          { "in": "body",
+            "name": "Review",
+            "schema": {
+              "required": ["user_id", "movie_id", "content"],
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "movie_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "content": {
+                  "type": "string",
+                  "example": "content"
+                }
+              },
+              "example": {
+                "user_id": 1,
+                "movie_id": 1,
+                "content": "content"
+              }
+            }
+          }],
+        "summary": "Create Review",
+        "responses": {
+          "200": {
+            "description": "Create Review",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "review": {
+                  "type": "array",
+                  "example": [{
+                    "rate_id": 3,
+                    "movie_id": 1,
+                    "user_id": 1,
+                    "rate": 10
+                  }]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Review"],
+        "description": "Delete movie rate",
+        "parameters": [
+          { "in": "body",
+            "name": "Rate Object",
+            "required": true,
+            "schema": {
+              "required": ["review_id"],
+              "type": "object",
+              "properties": {
+                "review_id": {
+                  "type": "number",
+                  "example": 1
+                }
+              },
+              "example": {
+                "review_id": 1
+              }
+            }
+          }],
+        "summary": "Delete Review for movie",
+        "responses": {
+          "200": {
+            "description": "Delete Review for movie"
+          }
+        }
+      }
+    },
+    "/comments_for_review": {
+      "get": {
+        "tags": ["Comments for review"],
+        "parameters": [
+          { "in": "query", "type": "number", "name": "review_id", "required": true }
+        ],
+        "summary": "Get Comments for review",
+        "responses": {
+          "200": {
+            "description": "Get Comments for review",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comments": {
+                  "type": "object",
+                  "example": {
+                      "id": 3,
+                      "user_id": 1,
+                      "created_at": "2014-07-20",
+                      "updated_at": "2015-07-19",
+                      "content": "Text example",
+                      "first_name": "Max",
+                      "last_name": "Kuper"
+                    }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Comments for review"],
+        "parameters": [
+          { "in": "body",
+            "name": "Create comment for review",
+            "schema": {
+              "required": ["user_id", "review_id", "content"],
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "review_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "content": {
+                  "type": "string",
+                  "example": "Text text"
+                }
+              },
+              "example": {
+                "user_id": 1,
+                "review_id": 1,
+                "content": "text"
+              }
+            }
+          }],
+        "summary": "Create comments for review",
+        "responses": {
+          "200": {
+            "description": "Get Comments for review",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comments": {
+                  "type": "object",
+                  "example": {
+                    "id": 3,
+                    "user_id": 1,
+                    "created_at": "2014-07-20",
+                    "updated_at": "2015-07-19",
+                    "content": "Text example",
+                    "first_name": "Max",
+                    "last_name": "Kuper"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Comments for review"],
+        "description": "Update Comments for review",
+        "parameters": [
+          { "in": "body",
+            "name": "Update Comments for review",
+            "schema": {
+              "required": ["comment_id", "review_id", "content"],
+              "type": "object",
+              "properties": {
+                "comment_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "review_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "content": {
+                  "type": "string",
+                  "example": "text"
+                }
+              },
+              "example": {
+                "comment_id": 1,
+                "review_id": 3,
+                "content": "Text"
+              }
+            }
+          }],
+        "summary": "Update comments for review",
+        "responses": {
+          "200": {
+            "description": "Get Comments for review",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comments": {
+                  "type": "object",
+                  "example": {
+                    "id": 3,
+                    "user_id": 1,
+                    "created_at": "2014-07-20",
+                    "updated_at": "2015-07-19",
+                    "content": "Text example",
+                    "first_name": "Max",
+                    "last_name": "Kuper"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Comments for review"],
+        "description": "Delete Comments for review",
+        "parameters": [
+          { "in": "body",
+            "name": "Comments for review",
+            "schema": {
+              "required": ["comment_id", "review_id"],
+              "type": "object",
+              "properties": {
+                "review_id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "comment_id": {
+                  "type": "number",
+                  "example": 1
+                }
+              },
+              "example": {
+                "review_id": 1,
+                "comment_id": 2
+              }
+            }
+          }],
+        "summary": "Delete comments for review",
+        "responses": {
+          "200": {
+            "description": "Get Comments for review",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comments": {
+                  "type": "object",
+                  "example": {
+                    "id": 3,
+                    "user_id": 1,
+                    "created_at": "2014-07-20",
+                    "updated_at": "2015-07-19",
+                    "content": "Text example",
+                    "first_name": "Max",
+                    "last_name": "Kuper"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
