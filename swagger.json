@@ -9,7 +9,7 @@
       "url": ""
     }
   },
-  "host": "localhost:3007",
+  "host": "wowmeup.pp.ua",
   "basePath": "/",
   "tags": [
     {
@@ -17,13 +17,30 @@
       "description": "API for get Movies"
     }
   ],
-  "schemes": ["http"],
+  "schemes": ["https"],
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "paths": {
     "/user/sing_up": {
       "post": {
         "tags": ["Sing Up"],
+        "produces" : [ "application/json" ],
+        "parameters": [
+          {
+            "name" : "params",
+            "in" : "body",
+            "description" : "sign up params",
+            "required": true,
+            "schema": {
+              "example": {
+                "password": "password",
+                "login": "john_doe@mail.com",
+                "first_name": "John",
+                "last_name": "Doe"
+              }
+            }
+          }
+        ],
         "summary": "Sing Up for user",
         "responses": {
           "200": {
@@ -351,17 +368,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/tmbd/init_data_base": {
-      "get": {
-        "tags": ["Init DB"],
-        "summary": "Call one time for init data base",
-        "responses": {
-          "200": {
-            "description": "Get init success"
           }
         }
       }
