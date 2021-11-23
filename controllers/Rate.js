@@ -9,7 +9,7 @@ class Rate {
       if (!user_id || !movie_id) throw { message: 'You need to pass user_id and movie_id' };
 
       const rateData = await RateModel.getRateByUserIdAndMovieId(req.query);
-
+      if (!rateData?.movie_rate) res.status(404).send({error: 'Not found'});
       res.status(200).send(rateData);
     } catch (error) {
       if (error.message) return res.status(422).send(error);

@@ -10,7 +10,7 @@ class Rate {
       const { rows } = await this.pgClient.query(
         `SELECT * FROM rated_movie WHERE user_id = ${Number(user_id)} AND movie_id = ${Number(movie_id)};`
       );
-      if (!rows[0] && !rows[0].id) throw { message: 'Failed rate, try later' };
+      if (!rows[0] && !rows[0].id) return {movie_rate:{}}
 
       return { movie_rate: rows[0] };
 
